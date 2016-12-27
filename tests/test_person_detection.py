@@ -46,6 +46,27 @@ class PersonDetectionSuite(unittest.TestCase):
         print('Retrieved {} of {} positives ({} recall)'.format(retrieved, total_positive, recall))
         assert recall > 0.9
 
+    def test_detect_from_files_precision(self):
+        """ Should have at least 50% precision. """
+        print('\nPrecision test: ', end='')
+        results = self.detect_in_images()
+
+        true_positive = 0
+        total_positive = 0
+
+        for i in range(len(results)):
+            annotation = self.annotations[i]
+            result = results[i]
+            if result:
+                total_positive += 1
+
+                if annotation == self.positive_annotation:
+                    true_positive += 1
+
+        precision = true_positive / total_positive
+        print('True positive {} of {} positives ({} precision)'.format(true_positive, total_positive, precision))
+        assert precision > 0.5
+
     def detect_in_images(self):
         """ Run detection method over all images and return the results. """
         results = []
