@@ -4,27 +4,28 @@ import numpy as np
 
 
 def detect_person_from_files(image_file1, image_file2):
-    x1 = load_image(image_file1) / 255
-    x2 = load_image(image_file2) / 255
+    x1 = load_image(image_file1)
+    x2 = load_image(image_file2)
     value = np.sum(compute2(x1, x2))
-    return value > 3
+    return value > 1
 
 
 def compute1(previous, current): #2
     """ Should get .55 precision and 0.4 recall with a threshold of 2. """
-    difference = current - previous
+    difference = (current / 255) - (previous / 255)
     return np.power(difference, 4)
 
 
 def compute2(previous, current):
     """ Should get .64 precision and .94 recall with a threshold of 3. """
-    difference = np.power(current - previous, 2)
-    return 3 * np.maximum(difference - 10*np.std(difference), np.zeros_like(difference))
+    factor = 1 / 255
+    difference = np.power((current - previous), 2)
+    return np.maximum(difference - 10*np.std(difference), np.zeros_like(difference)) * factor * factor
 
 
 def compute(previous, current):
     """ Should get .38 precision and .14 recall with a threshold of 5 :-( """
-    difference = np.power(current - previous, 2)
+    difference = np.power((current / 255) - (previous / 255), 2)
     std = np.std(difference)
     smoothed = ndimage.gaussian_filter(difference, sigma=(5, 5, 0), order=0)
     return 3 * np.maximum(smoothed - 3*std, np.zeros_like(difference))
