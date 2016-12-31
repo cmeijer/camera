@@ -12,13 +12,18 @@ def make_shots(number, interval=1):
     previous_path = None
     previous_is_detected = None
     while number > shots_taken:
+        print('shots taken is {}'.format(shots_taken))
         if time.time() > next_shot_time:
             next_shot_time += interval
             current_path = path.join(test_data_dir, 'im{:0>6}.jpg'.format(shots_taken))
             camera.capture(current_path)
             shots_taken += 1
 
-            is_detected = detect_person_from_files(previous_path, current_path)
+            if not previous_path is None:
+                is_detected = detect_person_from_files(previous_path, current_path)
+                if is_detected:
+                    print('detected... {}'.format(current_path))
+
             remove_undetected_image(is_detected, previous_is_detected, previous_path)
 
             previous_path = current_path
