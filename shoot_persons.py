@@ -11,6 +11,7 @@ def make_shots(number, interval=1):
     camera = camera_supplier.get_camera(is_test_mode)
     previous_path = None
     previous_is_detected = None
+    is_detected = None
     while number > shots_taken:
         print('shots taken is {}'.format(shots_taken))
         if time.time() > next_shot_time:
