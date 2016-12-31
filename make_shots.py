@@ -3,7 +3,7 @@ import time
 import camera_supplier
 
 
-def make_shots(number, interval):
+def make_shots(number, interval=1):
     shots_taken = 0
     next_shot_time = time.time()
     camera = camera_supplier.get_camera(is_test_mode)
