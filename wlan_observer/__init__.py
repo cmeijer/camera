@@ -1,4 +1,4 @@
-import dao
+import wlan_dao
 import nmap
 
 
@@ -16,4 +16,4 @@ class wlan_observer(object):
                 mac = device_report.split('MAC Address: ')[1].split(' ')[0]
             except IndexError as e:
                 mac = None
-            dao.save_or_update(ip, mac, time)
+            wlan_dao.save_or_update(ip, mac, time)

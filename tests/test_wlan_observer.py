@@ -1,8 +1,6 @@
 import unittest
-from wlan_observer import wlan_observer
-import nmap
-import dao
 import mock
+from wlan_observer import wlan_observer
 
 
 class PersonDetectionSuite(unittest.TestCase):
@@ -12,7 +10,7 @@ class PersonDetectionSuite(unittest.TestCase):
         """ Should instantiate without exceptions. """
         pass
 
-    @mock.patch('wlan_observer.dao')
+    @mock.patch('wlan_observer.wlan_dao')
     @mock.patch('wlan_observer.nmap')
     def test_scan_doa_call(self, mock_nmap, mock_dao):
         """ Should trigger dao call without mac. """
@@ -21,7 +19,7 @@ class PersonDetectionSuite(unittest.TestCase):
         self.observer.observe()
         mock_dao.save_or_update.assert_called_with('192.168.0.1', None, '2017-01-04 20:30 CET')
 
-    @mock.patch('wlan_observer.dao')
+    @mock.patch('wlan_observer.wlan_dao')
     @mock.patch('wlan_observer.nmap')
     def test_scan_doa_call_root(self, mock_nmap, mock_dao):
         """ Should trigger dao call without mac. """
