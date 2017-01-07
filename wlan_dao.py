@@ -10,12 +10,13 @@ columns = ['ip', mac_column, time_column, 'description']
 
 
 def save_or_update(ip, mac, time, description):
-    query = 'INSERT INTO {} VALUES ("{}", "{}", "{}", "{}");'.format(table_name, ip, mac, time, description)
+    query = 'INSERT INTO {} VALUES ("{}", "{}", "{}", "{}")'.format(table_name, ip, mac, time, description)
     execute_query(settings.database, query)
 
 
 def get_time_by_mac(mac):
-    query = 'SELECT {} FROM {} WHERE {} = "{}"'.format(time_column,table_name, mac_column, mac)
+    query = 'SELECT {} FROM {} WHERE {} = "{}" ORDER BY {} DESC'.format(time_column, table_name, mac_column, mac,
+                                                                        time_column)
     results = execute_query(settings.database, query)
     return parse(results[0][0])
 

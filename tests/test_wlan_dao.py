@@ -32,6 +32,16 @@ class PersonDetectionSuite(unittest.TestCase):
         self.assertEqual(self.time_stamp, result)
 
     @mock.patch('wlan_dao.settings')
+    def test_save_twice(self, settings_mock):
+        """ Save and load should return only latest time. """
+        settings_mock.configure_mock(database=self.testdb_name)
+        wlan_dao.save_or_update(self.ip, self.mac, self.time_stamp + timedelta(hours=-1), self.description)
+        wlan_dao.save_or_update(self.ip, self.mac, self.time_stamp, self.description)
+        wlan_dao.save_or_update(self.ip, self.mac, self.time_stamp + timedelta(hours=-2), self.description)
+        result = wlan_dao.get_time_by_mac(self.mac)
+        self.assertEqual(self.time_stamp, result)
+
+    @mock.patch('wlan_dao.settings')
     def setUp(self, settings_mock):
         self.description = 'My test device'
         self.ip = '123.123.123.123'
