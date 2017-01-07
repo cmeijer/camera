@@ -17,7 +17,7 @@ class PersonDetectionSuite(unittest.TestCase):
         mock_nmap.scan.return_value = self.no_root_output
 
         self.observer.observe()
-        mock_dao.save_or_update.assert_called_with('192.168.0.1', None, '2017-01-04 20:30 CET')
+        mock_dao.save_or_update.assert_called_with('192.168.0.1', None, '2017-01-04 20:30 CET', None)
 
     @mock.patch('wlan_observer.wlan_dao')
     @mock.patch('wlan_observer.nmap')
@@ -26,7 +26,7 @@ class PersonDetectionSuite(unittest.TestCase):
         mock_nmap.scan.return_value = self.root_output
 
         self.observer.observe()
-        mock_dao.save_or_update.assert_called_with('192.168.0.1', 'aa:bb:cc:dd:ee:ff', '2017-01-04 21:28 CET')
+        mock_dao.save_or_update.assert_called_with('192.168.0.1', 'aa:bb:cc:dd:ee:ff', '2017-01-04 21:28 CET', 'Technicolor USA')
 
     def setUp(self):
         self.observer = wlan_observer()
