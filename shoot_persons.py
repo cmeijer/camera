@@ -9,6 +9,7 @@ from settings import is_test_mode, test_data_dir
 
 
 def make_shots(number, interval=1):
+    random_word = generate_random_word(8)
     shots_taken = 0
     next_shot_time = time.time()
     camera = camera_supplier.get_camera(is_test_mode)
@@ -19,7 +20,7 @@ def make_shots(number, interval=1):
         print('shots taken is {}'.format(shots_taken))
         if time.time() > next_shot_time:
             next_shot_time += interval
-            current_path = path.join(test_data_dir, '{}{:0>6}.jpg'.format(generate_random_word(8), shots_taken))
+            current_path = path.join(test_data_dir, '{}{:0>6}.jpg'.format(random_word, shots_taken))
             camera.capture(current_path)
             shots_taken += 1
 
