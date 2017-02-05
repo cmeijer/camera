@@ -49,4 +49,4 @@ def remove_undetected_image(is_detected, previous_is_detected, previous_path):
 
 
 if __name__ == '__main__':
-    make_shots(10000)
+    make_shots(1000000)
