@@ -1,11 +1,14 @@
+#!/usr/bin/python3
+
 import random
 import string
 import time
 from os import path, remove
+from shutil import copyfile
 
 import camera_supplier
 from person_detection import detect_person_from_files
-from settings import is_test_mode, test_data_dir
+from settings import is_test_mode, temp_data_dir, detected_data_dir
 
 
 def make_shots(number, interval=1):
@@ -20,7 +23,8 @@ def make_shots(number, interval=1):
         print('shots taken is {}'.format(shots_taken))
         if time.time() > next_shot_time:
             next_shot_time += interval
-            current_path = path.join(test_data_dir, '{}{:0>6}.jpg'.format(random_word, shots_taken))
+            file_name = '{}{:0>6}.jpg'.format(random_word, shots_taken)
+            current_path = path.join(temp_data_dir, file_name)
             camera.capture(current_path)
             shots_taken += 1
 
@@ -28,6 +32,8 @@ def make_shots(number, interval=1):
                 is_detected = detect_person_from_files(previous_path, current_path)
                 if is_detected:
                     print('detected... {}'.format(current_path))
+                    detected_path = path.join(detected_data_dir, file_name)
+                    copyfile(current_path, detected_path)
 
             remove_undetected_image(is_detected, previous_is_detected, previous_path)
 
