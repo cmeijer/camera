@@ -1,8 +1,11 @@
 #!/usr/bin/python3
+import time
+
+# Wait for the system to finish booting before importing other packages.
+time.sleep(10)
 
 import random
 import string
-import time
 from os import path, remove
 from shutil import copyfile
 import images_dao
@@ -40,7 +43,6 @@ def make_shots(number, interval=1):
                     copyfile(current_path, detected_path)
                     detections_dao.save_or_update(file_name, 'movement')
 
-
             remove_undetected_image(is_detected, previous_is_detected, previous_path)
 
             previous_path = current_path
@@ -61,4 +63,4 @@ def remove_undetected_image(is_detected, previous_is_detected, previous_path):
 
 
 if __name__ == '__main__':
-    make_shots(10**10)
+    make_shots(10 ** 10)
