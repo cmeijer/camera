@@ -5,7 +5,6 @@ from dateutil.parser import parse
 from dao_utils import execute_query, create_table
 
 table_name = 'images'
-mac_column = 'mac'
 time_column = 'time'
 columns = ['filename', time_column]
 
@@ -16,7 +15,7 @@ def save_or_update(filename, seconds):
 
 
 def get_all_images(max_results=5):
-    query = 'SELECT {} FROM {} ORDER BY {} DESC LIMIT {}'.format(time_column, table_name, time_column, max_results)
+    query = 'SELECT * FROM {} ORDER BY {} DESC LIMIT {}'.format(table_name, time_column, max_results)
     results = execute_query(settings.database, query)
     return results
 

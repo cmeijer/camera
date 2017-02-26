@@ -5,6 +5,8 @@ import string
 import time
 from os import path, remove
 from shutil import copyfile
+import images_dao
+import detections_dao
 
 import camera_supplier
 from person_detection import detect_person_from_files
@@ -21,11 +23,13 @@ def make_shots(number, interval=1):
     is_detected = None
     while number > shots_taken:
         print('shots taken is {}'.format(shots_taken))
-        if time.time() > next_shot_time:
+        now = time.time()
+        if now > next_shot_time:
             next_shot_time += interval
             file_name = '{}{:0>10}.jpg'.format(random_word, shots_taken)
             current_path = path.join(temp_data_dir, file_name)
             camera.capture(current_path)
+            images_dao.save_or_update(file_name, now)
             shots_taken += 1
 
             if not previous_path is None:
@@ -34,6 +38,8 @@ def make_shots(number, interval=1):
                     print('detected... {}'.format(current_path))
                     detected_path = path.join(detected_data_dir, file_name)
                     copyfile(current_path, detected_path)
+                    detections_dao.save_or_update(file_name, 'movement')
+
 
             remove_undetected_image(is_detected, previous_is_detected, previous_path)
 
