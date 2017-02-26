@@ -1,5 +1,4 @@
 import settings
-import datetime
 from dateutil.parser import parse
 
 from dao_utils import execute_query, create_table
