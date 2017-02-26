@@ -23,7 +23,7 @@ def make_shots(number, interval=1):
         print('shots taken is {}'.format(shots_taken))
         if time.time() > next_shot_time:
             next_shot_time += interval
-            file_name = '{}{:0>6}.jpg'.format(random_word, shots_taken)
+            file_name = '{}{:0>10}.jpg'.format(random_word, shots_taken)
             current_path = path.join(temp_data_dir, file_name)
             camera.capture(current_path)
             shots_taken += 1
@@ -55,4 +55,4 @@ def remove_undetected_image(is_detected, previous_is_detected, previous_path):
 
 
 if __name__ == '__main__':
-    make_shots(1000000)
+    make_shots(10**10)
