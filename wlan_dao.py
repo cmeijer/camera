@@ -1,7 +1,8 @@
-import sqlite3
 import settings
 import datetime
 from dateutil.parser import parse
+
+from dao_utils import execute_query, create_table
 
 table_name = 'access'
 mac_column = 'mac'
@@ -21,23 +22,11 @@ def get_time_by_mac(mac):
     return parse(results[0][0])
 
 
+def get_all_connections(max_results=5):
+    query = 'SELECT * FROM {} ORDER BY {} DESC LIMIT {}'.format(table_name, time_column, max_results)
+    results = execute_query(settings.database, query)
+    return results
+
+
 def setup():
     create_table(settings.database, table_name, columns)
-
-
-def create_table(db_name, table_name, table_header):
-    """Create a table"""
-    query = "CREATE TABLE %s %s" % (table_name, tuple(table_header))
-    execute_query(db_name, query)
-
-
-def execute_query(db_name, query):
-    print(db_name, query, end='')
-    connection_obj = sqlite3.connect(db_name)
-    cursor_obj = connection_obj.cursor()
-    cursor_obj.execute(query)
-    results = cursor_obj.fetchall()
-    connection_obj.commit()
-    connection_obj.close()
-    print('...success')
-    return results
