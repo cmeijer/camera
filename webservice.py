@@ -38,7 +38,7 @@ def get_detections():
 
 @app.route('/connections')
 def get_connections():
-    return jsonify(wlan_dao.get_all_connections())
+    return jsonify((wlan_dao.get_all_connections()))
 
 
 if __name__ == '__main__':
