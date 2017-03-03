@@ -33,7 +33,7 @@ def get_images():
 
 @app.route('/detections')
 def get_detections():
-    return jsonify(detections_dao.get_all_detections())
+    return jsonify(detections_dao.get_last_detections())
 
 
 @app.route('/connections')
