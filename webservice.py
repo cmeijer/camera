@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 from flask import Flask
 from flask import jsonify
+from flask_cors import CORS
 
 import detections_dao
-import wlan_dao
 import images_dao
-
+import wlan_dao
 from settings import webservice_host as host
 
 """
@@ -26,6 +26,7 @@ tables:
 """
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/images')
