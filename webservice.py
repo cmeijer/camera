@@ -6,6 +6,8 @@ import detections_dao
 import wlan_dao
 import images_dao
 
+from settings import webservice_host as host
+
 """
 This is a webservice for storing and retrieving information about observations.
 /images
@@ -42,4 +44,4 @@ def get_connections():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=80)
+    app.run(debug=True, port=80, host=host)
