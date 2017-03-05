@@ -1,3 +1,3 @@
 #!/bin/bash
-cd public
+cd /home/pi/camera/web/public
 python3 -m http.server
