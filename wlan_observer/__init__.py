@@ -1,5 +1,6 @@
-import wlan_dao
+import requests
 import nmap
+import settings
 
 
 class wlan_observer(object):
@@ -14,7 +15,9 @@ class wlan_observer(object):
             ip = device_report.split('\\n')[0]
             mac = self.get_mac_address(device_report)
             description = self.get_device_description(device_report)
-            wlan_dao.save_or_update(ip, mac, time, description)
+            data = {'ip': ip, 'mac': mac, 'time': time, 'description': description}
+            address = 'http://' + settings.webservice_host + '/connections'
+            requests.post(address, json=data)
 
     def get_mac_address(self, device_report):
         try:
