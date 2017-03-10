@@ -14,6 +14,7 @@ def save_or_update(filename, object_type, bounding_box=None):
     query = 'INSERT INTO {} VALUES ("{}", "{}", "{}", "{}")'\
         .format(table_name, new_id, filename, object_type, bounding_box)
     execute_query(settings.database, query)
+    return new_id
 
 
 def get_all_detections(max_results=5):
