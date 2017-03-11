@@ -2,18 +2,18 @@
 import time
 
 # Wait for the system to finish booting before importing other packages.
+import requests
+
 time.sleep(10)
 
 import random
 import string
 from os import path, remove
 from shutil import copyfile
-import images_dao
-import detections_dao
 
 import camera_supplier
 from person_detection import detect_person_from_files
-from settings import is_test_mode, temp_data_dir, detected_data_dir
+from settings import is_test_mode, temp_data_dir, detected_data_dir, webservice_host
 
 
 def make_shots(number, interval=1):
@@ -32,7 +32,11 @@ def make_shots(number, interval=1):
             file_name = '{}{:0>10}.jpg'.format(random_word, shots_taken)
             current_path = path.join(temp_data_dir, file_name)
             camera.capture(current_path)
-            images_dao.save_or_update(file_name, now)
+
+            data = {'filename': file_name, 'time': now}
+            address = 'http://' + webservice_host + '/images'
+            requests.post(address, json=data)
+
             shots_taken += 1
 
             if not previous_path is None:
@@ -41,7 +45,10 @@ def make_shots(number, interval=1):
                     print('detected... {}'.format(current_path))
                     detected_path = path.join(detected_data_dir, file_name)
                     copyfile(current_path, detected_path)
-                    detections_dao.save_or_update(file_name, 'movement')
+
+                    data = {'filename': file_name, 'objecttype': 'movement'}
+                    address = 'http://' + webservice_host + '/detections'
+                    requests.post(address, json=data)
 
             remove_undetected_image(is_detected, previous_is_detected, previous_path)
 

@@ -54,16 +54,16 @@ def get_detections():
 
 @app.route('/detections', methods=['POST'])
 def create_detection():
-    if not request.json or 'filename' not in request.json or 'objecttypeid' not in request.json:
+    if not request.json or 'filename' not in request.json or 'objecttype' not in request.json:
         abort(400)
     filename = request.json['filename']
-    object_type = request.json['objecttypeid']
+    object_type = request.json['objecttype']
     bounding_box = request.json.get('boundingbox', '')
     id = detections_dao.save_or_update(filename, object_type, bounding_box)
     detection = {
         'id': id,
         'filename': filename,
-        'objecttypeid': object_type,
+        'objecttype': object_type,
         'boundingbox': bounding_box,
     }
     return jsonify({'detection': detection}), 201
