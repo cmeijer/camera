@@ -2,11 +2,12 @@ import settings
 import datetime
 from dateutil.parser import parse
 
-from dao_utils import execute_query, create_table
+from dao_utils import execute_query
 
 table_name = 'images'
 time_column = 'time'
-columns = ['filename', time_column]
+filename_column = 'filename'
+columns = [filename_column, time_column]
 
 
 def save_or_update(filename, seconds):
@@ -21,4 +22,10 @@ def get_all_images(max_results=5):
 
 
 def setup():
-    create_table(settings.database, table_name, columns)
+    create_table()
+
+
+def create_table():
+    """Create a table"""
+    query = "CREATE TABLE %s  (%s VARCHAR(32) PRIMARY KEY, %s REAL)" % (table_name, filename_column, time_column)
+    execute_query(settings.database, query)
