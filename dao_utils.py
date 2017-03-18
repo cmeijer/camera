@@ -17,3 +17,8 @@ def execute_query(db_name, query):
     connection_obj.close()
     print('...success')
     return results
+
+
+def get_index_query(table_name, column_name):
+    return "CREATE INDEX %s ON %s (%s);" % (
+        '_'.join(["index", table_name, column_name]), table_name, column_name)

@@ -1,12 +1,14 @@
 import settings
 from dateutil.parser import parse
 
-from dao_utils import execute_query, create_table
+from dao_utils import execute_query, get_index_query
 
 table_name = 'access'
 mac_column = 'mac'
 time_column = 'time'
-columns = ['ip', mac_column, time_column, 'description']
+ip_column = 'ip'
+description_column = 'description'
+columns = [ip_column, mac_column, time_column, description_column]
 
 
 def save_or_update(ip, mac, time, description):
@@ -28,4 +30,14 @@ def get_all_connections(max_results=5):
 
 
 def setup():
-    create_table(settings.database, table_name, columns)
+    create_table()
+
+
+def create_table():
+    """Create a table"""
+    queries = ["CREATE TABLE %s (%s VARCHAR(32) PRIMARY KEY, %s VARCHAR(32), %s REAL, %s VARCHAR(128))" % (
+        table_name, ip_column, mac_column, time_column, description_column),
+               get_index_query(table_name, time_column),
+               get_index_query(table_name, mac_column)]
+    for query in queries:
+        execute_query(settings.database, query)

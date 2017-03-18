@@ -2,7 +2,7 @@ import settings
 import datetime
 from dateutil.parser import parse
 
-from dao_utils import execute_query
+from dao_utils import execute_query, get_index_query
 
 table_name = 'images'
 time_column = 'time'
@@ -28,9 +28,9 @@ def setup():
 def create_table():
     """Create a table"""
     queries = ["CREATE TABLE %s (%s VARCHAR(32) PRIMARY KEY, %s REAL)" % (table_name, filename_column, time_column),
-               "CREATE INDEX %s ON %s (%s);" % (
-                   '_'.join(["index", table_name, filename_column]), table_name, filename_column),
-               "CREATE INDEX %s ON %s (%s);" % (
-                   '_'.join(["index", table_name, time_column]), table_name, time_column)]
+               get_index_query(table_name, filename_column),
+               get_index_query(table_name, time_column)]
     for query in queries:
         execute_query(settings.database, query)
+
+
