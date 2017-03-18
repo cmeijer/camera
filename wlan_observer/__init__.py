@@ -1,6 +1,7 @@
 import requests
 import nmap
 import settings
+import time
 
 
 class wlan_observer(object):
@@ -8,14 +9,13 @@ class wlan_observer(object):
         """ Does a scan of the local network and records connected devices. """
         out, err = nmap.scan()
         reports = str(out).split('Nmap scan report for ')
-        intro = reports[0].strip('\\n')
-        time = intro.split(' at ')[1]
+        now = time.time()
         device_reports = reports[1:]
         for device_report in device_reports:
             ip = device_report.split('\\n')[0]
             mac = self.get_mac_address(device_report)
             description = self.get_device_description(device_report)
-            data = {'ip': ip, 'mac': mac, 'time': time, 'description': description}
+            data = {'ip': ip, 'mac': mac, 'time': now, 'description': description}
             address = 'http://' + settings.webservice_host + '/connections'
             requests.post(address, json=data)
 

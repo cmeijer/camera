@@ -12,7 +12,7 @@ columns = [ip_column, mac_column, time_column, description_column]
 
 
 def save_or_update(ip, mac, time, description):
-    query = 'INSERT INTO {} VALUES ("{}", "{}", "{}", "{}")'.format(table_name, ip, mac, time, description)
+    query = 'INSERT INTO {} VALUES ("{}", "{}", {}, "{}")'.format(table_name, ip, mac, time, description)
     execute_query(settings.database, query)
 
 
@@ -35,7 +35,7 @@ def setup():
 
 def create_table():
     """Create a table"""
-    queries = ["CREATE TABLE %s (%s VARCHAR(32) PRIMARY KEY, %s VARCHAR(32), %s REAL, %s VARCHAR(128))" % (
+    queries = ["CREATE TABLE %s (%s VARCHAR(32), %s VARCHAR(32), %s REAL, %s VARCHAR(128))" % (
         table_name, ip_column, mac_column, time_column, description_column),
                get_index_query(table_name, time_column),
                get_index_query(table_name, mac_column)]

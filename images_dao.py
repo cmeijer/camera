@@ -11,7 +11,7 @@ columns = [filename_column, time_column]
 
 
 def save_or_update(filename, seconds):
-    query = 'INSERT INTO {} VALUES ("{}", "{}")'.format(table_name, filename, seconds)
+    query = 'INSERT INTO {} VALUES ("{}", {})'.format(table_name, filename, seconds)
     execute_query(settings.database, query)
 
 
