@@ -27,5 +27,10 @@ def setup():
 
 def create_table():
     """Create a table"""
-    query = "CREATE TABLE %s  (%s VARCHAR(32) PRIMARY KEY, %s REAL)" % (table_name, filename_column, time_column)
-    execute_query(settings.database, query)
+    queries = ["CREATE TABLE %s (%s VARCHAR(32) PRIMARY KEY, %s REAL)" % (table_name, filename_column, time_column),
+               "CREATE INDEX %s ON %s (%s);" % (
+                   '_'.join(["index", table_name, filename_column]), table_name, filename_column),
+               "CREATE INDEX %s ON %s (%s);" % (
+                   '_'.join(["index", table_name, time_column]), table_name, time_column)]
+    for query in queries:
+        execute_query(settings.database, query)
